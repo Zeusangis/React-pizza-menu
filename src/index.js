@@ -67,11 +67,12 @@ function Header() {
 
 function Pizza(props) {
     return (
-        <div>
-            <img src="" alt=""/>
-            <h3></h3>
-            <p></p>
-        </div>
+        <li className="pizza">
+            <img src={props.photoName} alt={props.name} />
+            <h3>{props.name}</h3>
+            <p>{props.ingredients}</p>
+            <span>{props.price}</span>
+        </li>
     )
 }
 
@@ -79,7 +80,14 @@ function Menu() {
     return (
         <menu className="menu">
             <h2>Our Menu</h2>
-            <Pizza />
+            <ul className="pizzas">
+                {
+                    pizzaData.map((pizza) =>
+                    (
+                        <Pizza name={pizza.name} ingredients={pizza.ingredients} price={pizza.price} photoName={pizza.photoName} soldOut={pizza.soldOut} />
+                    ))
+                }
+            </ul>
         </menu>
     )
 }

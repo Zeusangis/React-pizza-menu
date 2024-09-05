@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import './index.css';
+import "./index.css";
 
 const pizzaData = [
     {
@@ -65,35 +65,70 @@ function Header() {
     );
 }
 
-function Pizza(props) {
+function Pizza(pizza) {
     return (
-        <li className="pizza">
-            <img src={props.photoName} alt={props.name} />
-            <h3>{props.name}</h3>
-            <p>{props.ingredients}</p>
-            <span>{props.price}</span>
+        <li className={`pizza ${pizza.soldOut ? "sold-out" : ""}`}>
+            <img src={pizza.photoName} alt={pizza.name} />
+            <div>
+                <h3>{pizza.name}</h3>
+                <p>{pizza.ingredients}</p>
+                <span>{pizza.soldOut ? 'Sold Out' : pizza.price}</span>
+            </div>
         </li>
-    )
+    );
 }
 
 function Menu() {
+    const numPizzas = pizzaData.length
+
     return (
         <menu className="menu">
             <h2>Our Menu</h2>
-            <ul className="pizzas">
-                {
-                    pizzaData.map((pizza) =>
-                    (
-                        <Pizza name={pizza.name} ingredients={pizza.ingredients} price={pizza.price} photoName={pizza.photoName} soldOut={pizza.soldOut} />
-                    ))
-                }
-            </ul>
+            {numPizzas > 0 ? (
+                <>
+                    <p>Authentic Nepali Cuisines. 6 creative dishes to choose from. All from out stove oven, all organic, all delicious.</p>
+
+                    <ul className="pizzas">
+                        {pizzaData.map((pizza) => (
+                            <Pizza
+                                name={pizza.name}
+                                ingredients={pizza.ingredients}
+                                price={pizza.price}
+                                photoName={pizza.photoName}
+                                soldOut={pizza.soldOut}
+                            />
+                        ))}
+                    </ul>
+                </>
+            ) : (
+                <div>
+                    <p>We are working on our menu.</p>
+                </div>
+            )}
         </menu>
-    )
+    );
 }
 
 function Footer() {
-    return <footer className="footer">{new Date().toLocaleTimeString()}. We're currently open.</footer>
+    const openHours = 8;
+    const closeHours = 22
+    const currHours = new Date().getHours()
+
+    const isOpen = currHours >= openHours && currHours <= closeHours;
+
+
+    return (
+        <footer className="footer">
+            {isOpen ? (
+                <div className="order">
+                    <p>{new Date().toLocaleTimeString()}. We're currently open.</p>
+                    <button className="btn">Order Now</button>
+                </div>) : (
+                <p>We are closed now.</p>
+            )
+            }
+        </footer>
+    );
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
